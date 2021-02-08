@@ -89,7 +89,7 @@ function makeDrive() {
   skyTexture.encoding = THREE.sRGBEncoding;
 
   scene.background = skyTexture;
-
+  let fence;
   //сбрасываем координаты машины
   car.position.x = 0;
   car.position.y = 0;
@@ -108,33 +108,54 @@ function makeDrive() {
     // car.material.map = "texture"; // <-- move here
     scene.add(gltf.scene);
     // PMREMGenerator.fromEquirectangular();
-    let fence = gltf.scene.children[2];
+    fence = gltf.scene.children[2];
     console.log(fence);
     fence.castShadow = true;
     fence.receiveShadow = true;
+    fencebody.position.x = fence.position.x;
+    fencebody.position.y = fence.position.y;
+    fencebody.position.z = fence.position.z;
+    let bbfenceHelper = new THREE.BoundingBoxHelper(fence, 0xffffff); // all map??????
+    scene.add(bbfenceHelper);
     // console.clear();
-    console.log(gltf.scene.children[2]);
+    // console.log(gltf.scene.children[2]);
   });
 
   let bbHelper = new THREE.BoundingBoxHelper(car, 0xffffff);
   // bbHelper.min.sub(car.position);
   // bbHelper.max.sub(car.position);
   scene.add(bbHelper);
-console.log(bbHelper.position.x);
-console.log(car.position.x);
+  // console.log(bbHelper.position.x);
+  // console.log(car.position.x);
+
   // bbHelper.position.x = car.position.x;
   // bbHelper.position.y = car.position.y;
   // bbHelper.position.z = car.position.z;
   // bbHelper.quaternion.x = car.quaternion.x;
   // bbHelper.quaternion.y = car.quaternion.y;
   // bbHelper.quaternion.z = car.quaternion.z;
+  // bbHelper.quaternion.w = car.quaternion.w;
 
   // // PHYSICS BOXES (CANNON JS ?)
-  // // Setup our world
-  // let world = new CANNON.World();
-  // world.gravity.set(0, -10, 0);
-  // world.broadphase = new CANNON.NaiveBroadphase();
+  // Setup our world
+  let world = new CANNON.World();
+  world.gravity.set(0, -10, 0);
+  world.broadphase = new CANNON.NaiveBroadphase();
 
+  const carBodyShape = new CANNON.Box(new CANNON.Vec3(0.5, 0.5, 1), 0xffffff);
+  const carBody = new CANNON.Body({ mass: 1 });
+  carBody.addShape(carBodyShape);
+  carBody.position.x = car.position.x;
+  carBody.position.y = car.position.y;
+  carBody.position.z = car.position.z;
+  world.addBody(carBody);
+  console.log(carBody);
+
+  const fenceShape = new CANNON.Box(new CANNON.Vec3(0.5, 0.5, 1), 0xffffff);
+  const fencebody = new CANNON.Body({ mass: 1 });
+  fencebody.addShape(fenceShape);
+  world.addBody(fencebody);
+  console.log(fencebody);
   // //carbox
   // let carbox = new CANNON.Box(new CANNON.Vec3());
   // let carbody = new CANNON.Body({ mass: 5 });
