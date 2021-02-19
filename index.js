@@ -112,19 +112,23 @@ function makeDrive() {
     console.log(fence);
     fence.castShadow = true;
     fence.receiveShadow = true;
-    fencebody.position.x = fence.position.x;
-    fencebody.position.y = fence.position.y;
-    fencebody.position.z = fence.position.z;
-    let bbfenceHelper = new THREE.BoundingBoxHelper(fence, 0xffffff); // all map??????
-    scene.add(bbfenceHelper);
+    // fencebody.position.x = fence.position.x;
+    // fencebody.position.y = fence.position.y;
+    // fencebody.position.z = fence.position.z;
+    // let bbfenceHelper = new THREE.BoundingBoxHelper(fence, 0xffffff); // all map??????
+    // scene.add(bbfenceHelper);
     // console.clear();
     // console.log(gltf.scene.children[2]);
   });
+  var colliderSystem = new THREEx.ColliderSystem();
+  colliderSystem.computeAndNotify(colliders);
+  var collider = THREEx.Collider.createFromObject3d(car);
+  console.log(collider);
 
-  let bbHelper = new THREE.BoundingBoxHelper(car, 0xffffff);
+  // let bbHelper = new THREE.BoundingBoxHelper(car, 0xffffff);
   // bbHelper.min.sub(car.position);
   // bbHelper.max.sub(car.position);
-  scene.add(bbHelper);
+  // scene.add(bbHelper);
   // console.log(bbHelper.position.x);
   // console.log(car.position.x);
 
@@ -138,24 +142,24 @@ function makeDrive() {
 
   // // PHYSICS BOXES (CANNON JS ?)
   // Setup our world
-  let world = new CANNON.World();
-  world.gravity.set(0, -10, 0);
-  world.broadphase = new CANNON.NaiveBroadphase();
+  // let world = new CANNON.World();
+  // world.gravity.set(0, -10, 0);
+  // world.broadphase = new CANNON.NaiveBroadphase();
 
-  const carBodyShape = new CANNON.Box(new CANNON.Vec3(0.5, 0.5, 1), 0xffffff);
-  const carBody = new CANNON.Body({ mass: 1 });
-  carBody.addShape(carBodyShape);
-  carBody.position.x = car.position.x;
-  carBody.position.y = car.position.y;
-  carBody.position.z = car.position.z;
-  world.addBody(carBody);
-  console.log(carBody);
+  // const carBodyShape = new CANNON.Box(new CANNON.Vec3(0.5, 0.5, 1), 0xffffff);
+  // const carBody = new CANNON.Body({ mass: 1 });
+  // carBody.addShape(carBodyShape);
+  // carBody.position.x = car.position.x;
+  // carBody.position.y = car.position.y;
+  // carBody.position.z = car.position.z;
+  // world.addBody(carBody);
+  // console.log(carBody);
 
-  const fenceShape = new CANNON.Box(new CANNON.Vec3(0.5, 0.5, 1), 0xffffff);
-  const fencebody = new CANNON.Body({ mass: 1 });
-  fencebody.addShape(fenceShape);
-  world.addBody(fencebody);
-  console.log(fencebody);
+  // const fenceShape = new CANNON.Box(new CANNON.Vec3(0.5, 0.5, 1), 0xffffff);
+  // const fencebody = new CANNON.Body({ mass: 1 });
+  // fencebody.addShape(fenceShape);
+  // world.addBody(fencebody);
+  // console.log(fencebody);
   // //carbox
   // let carbox = new CANNON.Box(new CANNON.Vec3());
   // let carbody = new CANNON.Body({ mass: 5 });
@@ -206,6 +210,7 @@ loader.load(
     console.log(gltf.bBox);
     // const box = new THREE.BoxHelper(car, 0xffff00);
     // scene.add(box);
+    // console.log(car);
   }
 );
 init(); // запускаем всю сцену
